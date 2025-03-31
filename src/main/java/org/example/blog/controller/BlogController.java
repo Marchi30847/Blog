@@ -80,7 +80,7 @@ public class BlogController {
         try {
             manager = userService.findById(managerId);
         } catch (NoSuchEntityException e) {
-            System.out.println("No such manager");
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -109,11 +109,11 @@ public class BlogController {
         try {
             blogService.delete(id);
         } catch (NoSuchEntityException e) {
-            System.out.println("No such blog");
+            System.out.println(e.getMessage());
             return;
         }
 
-        System.out.println("Your blog is deleted");
+        System.out.println("The blog is deleted");
         displayBreakLine();
     }
 
@@ -121,8 +121,8 @@ public class BlogController {
         System.out.println("\n" + "CHOOSE A SEARCHING OPTION");
         displayBreakLine();
         System.out.println("1. Find by id");
-        System.out.println("2. Find by name");
-        System.out.println("3. Find by manager");
+        System.out.println("2. Find by email");
+        System.out.println("3. Find by role");
         displayBreakLine();
 
         if (!scanner.hasNextInt()) {
@@ -148,54 +148,52 @@ public class BlogController {
                 Long id = scanner.nextLong();
                 scanner.nextLine();
 
-                Blog blog;
+                User user;
                 try {
-                    blog = blogService.findById(id);
+                    user = userService.findById(id);
                 } catch (NoSuchEntityException e) {
-                    System.out.println("No such blog");
+                    System.out.println(e.getMessage());
                     return;
                 }
 
-                System.out.println(blog);
+                System.out.println(user);
 
                 displayBreakLine();
             }
             case 2 -> {
-                System.out.println("Enter a name");
-                displayBreakLine();
-
-                String name = scanner.nextLine();
-
-                List<Blog> blogs;
-                try {
-                    blogs = blogService.findByName(name);
-                } catch (NoSuchEntityException e) {
-                    System.out.println("No such blog");
-                    return;
-                }
-
-                for (Blog blog : blogs) {
-                    System.out.println(blog);
-                }
-
-                displayBreakLine();
-            }
-            case 3 -> {
-                System.out.println("Enter a manager email");
+                System.out.println("Enter an email");
                 displayBreakLine();
 
                 String email = scanner.nextLine();
 
-                List<Blog> blogs;
+                User user;
                 try {
-                    blogs = blogService.findByBlogManagerEmail(email);
+                    user = userService.findByEmail(email);
                 } catch (NoSuchEntityException e) {
-                    System.out.println("No such blog");
+                    System.out.println(e.getMessage());
                     return;
                 }
 
-                for (Blog blog : blogs) {
-                    System.out.println(blog);
+                System.out.println(user);
+
+                displayBreakLine();
+            }
+            case 3 -> {
+                System.out.println("Enter a role name");
+                displayBreakLine();
+
+                String roleName = scanner.nextLine();
+
+                List<User> users;
+                try {
+                    users = userService.findByUserRoleName(roleName);
+                } catch (NoSuchEntityException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+
+                for (User user : users) {
+                    System.out.println(user);
                 }
 
                 displayBreakLine();
@@ -205,11 +203,11 @@ public class BlogController {
     }
 
     private void list() {
-        System.out.println("\n" + "LIST OF ALL BLOGS");
+        System.out.println("\n" + "LIST OF ALL USERS");
         displayBreakLine();
 
-        for (Blog blog : blogService.findAll()) {
-            System.out.println(blog);
+        for (User user : userService.findAll()) {
+            System.out.println(user);
         }
 
         displayBreakLine();

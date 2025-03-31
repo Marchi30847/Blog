@@ -9,7 +9,7 @@ import java.util.List;
 public interface SpringDataBlogRepository extends CrudRepository<Blog, Long> {
     List<Blog> findByName(String name);
 
-    @Query("SELECT b FROM Blog b JOIN User u ON b.manager = u WHERE u.email = :managerEmail")
+    @Query("SELECT b FROM Blog b JOIN b.manager u WHERE u.email = :managerEmail")
     List<Blog> findByManager(String managerEmail);
 }
 

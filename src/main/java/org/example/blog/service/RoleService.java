@@ -2,6 +2,7 @@ package org.example.blog.service;
 
 import org.example.blog.entity.Role;
 import org.example.blog.exception.NoSuchEntityException;
+import org.example.blog.exception.UniquenessValidationException;
 import org.example.blog.repository.SpringDataRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,26 @@ public class RoleService {
         return roleRepository.findById(id).orElseThrow(() -> new NoSuchEntityException("Role Not Found"));
     }
 
+    public Role findByName(String name) throws NoSuchEntityException {
+        return roleRepository.findByName(name).orElseThrow(() -> new NoSuchEntityException("Role Not Found"));
+    }
+
+    public List<Role> findByUserEmail(String userEmail) throws NoSuchEntityException {
+        List<Role> roles = roleRepository.findByUsers(userEmail);
+        if (roles.isEmpty()) {
+            throw new NoSuchEntityException("Role Not Found");
+        }
+        return roles;
+    }
+
     public List<Role> findAll() {
         return (List<Role>) roleRepository.findAll();
     }
 
-    public void save(Role role) {
+    public void save(Role role) throws UniquenessValidationException {
+        if (findByName(role.getName()) != null) {
+            throw new UniquenessValidationException("Role Name is already in use");
+        }
         roleRepository.save(role);
     }
 

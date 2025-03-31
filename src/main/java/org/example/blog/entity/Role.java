@@ -22,9 +22,14 @@ public class Role {
     public Role() {
     }
 
-    public Role(String name, Set<User> users) {
+    public Role(String name) {
         this.name = name;
-        this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + id + ", " +
+                "name: " + name;
     }
 
     public void removeFromUsers(User user) {

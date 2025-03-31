@@ -2,6 +2,7 @@ package org.example.blog.service;
 
 import org.example.blog.entity.Blog;
 import org.example.blog.exception.NoSuchEntityException;
+import org.example.blog.exception.UniquenessValidationException;
 import org.example.blog.repository.SpringDataBlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,10 @@ public class BlogService {
         return (List<Blog>) blogRepository.findAll();
     }
 
-    public void save(Blog blog) {
+    public void save(Blog blog) throws UniquenessValidationException {
+        if (findByBlogManagerEmail(blog.getManager().getEmail()) != null) {
+            throw new UniquenessValidationException("Blog Manager is already in use");
+        }
         blogRepository.save(blog);
     }
 

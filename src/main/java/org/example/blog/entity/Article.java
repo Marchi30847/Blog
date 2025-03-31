@@ -40,31 +40,12 @@ public class Article {
                 "blog_name: " + blog.getName();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
+    public String getTitle() {return title;}
+    public User getAuthor() {return author;}
+    public Blog getBlog() {return blog;}
 
-    public String getTitle() {
-        return title;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public Blog getBlog() {
-        return blog;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public void setBlog(Blog blog) {
-        this.blog = blog;
-    }
+    public void setTitle(String title) {this.title = title;}
+    public void setAuthor(User author) {this.author = author;}
+    public void setBlog(Blog blog) {this.blog = blog;}
 }

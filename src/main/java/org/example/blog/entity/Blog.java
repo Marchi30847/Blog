@@ -28,6 +28,14 @@ public class Blog {
         this.manager = manager;
     }
 
+    @Override
+    public String toString() {
+        return "id: " + id + ", " +
+                "name: " + name + ", " +
+                "manager_id: " + manager.getId() + ", " +
+                "manager_email: " + manager.getEmail();
+    }
+
     public void removeFromArticles(Article article) {
         this.articles.remove(article);
         article.setBlog(null);

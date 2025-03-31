@@ -84,7 +84,7 @@ public class ArticleController {
         try {
             author = userService.findById(authorId);
         } catch (NoSuchEntityException e) {
-            System.out.println("No such author");
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -105,7 +105,7 @@ public class ArticleController {
         try {
             blog = blogService.findById(blogId);
         } catch (NoSuchEntityException e) {
-            System.out.println("No such blog");
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -134,11 +134,11 @@ public class ArticleController {
         try {
             articleService.delete(id);
         } catch (NoSuchEntityException e) {
-            System.out.println("No such article");
+            System.out.println(e.getMessage());
             return;
         }
 
-        System.out.println("Your article is deleted");
+        System.out.println("The article is deleted");
         displayBreakLine();
     }
 
@@ -178,7 +178,7 @@ public class ArticleController {
                 try {
                     article = articleService.findById(id);
                 } catch (NoSuchEntityException e) {
-                    System.out.println("No such article");
+                    System.out.println(e.getMessage());
                     return;
                 }
 
@@ -196,7 +196,7 @@ public class ArticleController {
                 try {
                     articles = articleService.findByTitle(title);
                 } catch (NoSuchEntityException e) {
-                    System.out.println("No such article");
+                    System.out.println(e.getMessage());
                     return;
                 }
 
@@ -216,7 +216,7 @@ public class ArticleController {
                 try {
                     articles = articleService.findByAuthorEmail(email);
                 } catch (NoSuchEntityException e) {
-                    System.out.println("No such article");
+                    System.out.println(e.getMessage());
                     return;
                 }
 
@@ -236,7 +236,7 @@ public class ArticleController {
                 try {
                     articles = articleService.findByBlogName(blogName);
                 } catch (NoSuchEntityException e) {
-                    System.out.println("No such article");
+                    System.out.println(e.getMessage());
                     return;
                 }
 

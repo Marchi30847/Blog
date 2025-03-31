@@ -1,23 +1,26 @@
 package org.example.blog.controller;
 
 import org.example.blog.entity.Role;
+import org.example.blog.entity.User;
 import org.example.blog.exception.NoSuchEntityException;
 import org.example.blog.service.RoleService;
 import org.example.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 @Controller
-public class RoleController {
+public class UserController {
     private final UserService userService;
     private final RoleService roleService;
     private final Scanner scanner;
 
     @Autowired
-    public RoleController(UserService userService, RoleService roleService, Scanner scanner) {
+    public UserController(UserService userService, RoleService roleService, Scanner scanner) {
         this.userService = userService;
         this.roleService = roleService;
         this.scanner = scanner;
@@ -26,10 +29,10 @@ public class RoleController {
     public void start() {
         while (true) {
             System.out.println("Choose an operation: ");
-            System.out.println("1. Add Role");
-            System.out.println("2. Delete Role");
-            System.out.println("3. Find Role");
-            System.out.println("4. List Role");
+            System.out.println("1. Add User");
+            System.out.println("2. Delete User");
+            System.out.println("3. Find User");
+            System.out.println("4. List User");
             System.out.println("5. Return to Main Menu");
 
             if (!scanner.hasNextInt()) {
@@ -55,23 +58,67 @@ public class RoleController {
     }
 
     private void add() {
-        System.out.println("\n" + "ADD A NEW ROLE");
+        System.out.println("\nADD A NEW USER");
         displayBreakLine();
-        System.out.println("Enter a name");
+        System.out.println("Enter an email:");
         displayBreakLine();
 
-        String name = scanner.nextLine();
+        String email = scanner.nextLine();
+        Set<Role> roles = new HashSet<>();
 
+        while (true) {
+            displayBreakLine();
+            System.out.println("Choose an operation: ");
+            System.out.println("1. Add Role");
+            System.out.println("2. Save User");
+            displayBreakLine();
 
-        Role role = new Role(name);
-        roleService.save(role);
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input, please enter a number (1 or 2)");
+                scanner.nextLine();
+                continue;
+            }
 
-        System.out.println("A new role added");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                System.out.println("Enter role id:");
+                displayBreakLine();
+
+                if (!scanner.hasNextLong()) {
+                    System.out.println("Invalid input, please enter a valid role ID (number)");
+                    scanner.nextLine();
+                    continue;
+                }
+
+                Long id = scanner.nextLong();
+                scanner.nextLine();
+
+                try {
+                    Role role = roleService.findById(id);
+                    roles.add(role);
+
+                } catch (NoSuchEntityException e) {
+                    System.out.println(e.getMessage());
+                }
+
+            } else if (choice == 2) {
+                break;
+            } else {
+                System.out.println("Invalid choice, please enter 1 or 2");
+            }
+        }
+
+        User user = new User(email, roles);
+        userService.save(user);
+
+        System.out.println("A new user has been added");
         displayBreakLine();
     }
 
     private void delete() {
-        System.out.println("\n" + "DELETE AN EXISTING ROLE");
+        System.out.println("\n" + "DELETE AN EXISTING USER");
         displayBreakLine();
         System.out.println("Enter an id of the role you want to delete");
         displayBreakLine();
@@ -100,8 +147,9 @@ public class RoleController {
         System.out.println("\n" + "CHOOSE A SEARCHING OPTION");
         displayBreakLine();
         System.out.println("1. Find by id");
-        System.out.println("2. Find by name");
-        System.out.println("3. Find by user");
+        System.out.println("2. Find by email");
+        System.out.println("3. Find by role");
+        System.out.println("3. Find by blog");
         displayBreakLine();
 
         if (!scanner.hasNextInt()) {
@@ -158,22 +206,40 @@ public class RoleController {
                 displayBreakLine();
             }
             case 3 -> {
-                System.out.println("Enter a user email");
+                System.out.println("Enter a role name");
                 displayBreakLine();
 
-                String email = scanner.nextLine();
+                String roleName = scanner.nextLine();
 
-                List<Role> roles;
+                List<User> users;
                 try {
-                    roles = roleService.findByUserEmail(email);
+                    users = userService.findByUserRoleName(roleName);
                 } catch (NoSuchEntityException e) {
                     System.out.println(e.getMessage());
                     return;
                 }
 
-                for (Role role : roles) {
-                    System.out.println(role);
+                for (User user : users) {
+                    System.out.println(user);
                 }
+
+                displayBreakLine();
+            }
+            case 4 -> {
+                System.out.println("Enter a blog name");
+                displayBreakLine();
+
+                String blogName = scanner.nextLine();
+
+                User user;
+                try {
+                    user = userService.findByManagedBlogName(blogName);
+                } catch (NoSuchEntityException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+
+                System.out.println(user);
 
                 displayBreakLine();
             }
@@ -185,8 +251,8 @@ public class RoleController {
         System.out.println("\n" + "LIST OF ALL ROLES");
         displayBreakLine();
 
-        for (Role role : roleService.findAll()) {
-            System.out.println(role);
+        for (User user : userService.findAll()) {
+            System.out.println(user);
         }
 
         displayBreakLine();

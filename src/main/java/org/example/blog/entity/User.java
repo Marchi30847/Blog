@@ -21,7 +21,7 @@ public class User {
     @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL)
     private Blog managedBlog;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -32,11 +32,16 @@ public class User {
     public User() {
     }
 
-    public User(String email, Set<Article> articles, Blog managedBlog, Set<Role> roles) {
+    public User(String email, Set<Role> roles) {
         this.email = email;
-        this.articles = articles;
-        this.managedBlog = managedBlog;
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + id + ", " +
+                "email: " + email + ", " +
+                "roles: " + roles;
     }
 
     public void removeFromArticles(Article article) {
