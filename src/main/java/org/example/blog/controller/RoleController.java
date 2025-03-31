@@ -2,6 +2,7 @@ package org.example.blog.controller;
 
 import org.example.blog.entity.Role;
 import org.example.blog.exception.NoSuchEntityException;
+import org.example.blog.exception.UniquenessValidationException;
 import org.example.blog.service.RoleService;
 import org.example.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,12 @@ public class RoleController {
 
 
         Role role = new Role(name);
-        roleService.save(role);
+        try {
+            roleService.save(role);
+        } catch (UniquenessValidationException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         System.out.println("A new role added");
         displayBreakLine();

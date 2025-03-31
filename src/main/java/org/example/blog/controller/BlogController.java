@@ -3,6 +3,7 @@ package org.example.blog.controller;
 import org.example.blog.entity.Blog;
 import org.example.blog.entity.User;
 import org.example.blog.exception.NoSuchEntityException;
+import org.example.blog.exception.UniquenessValidationException;
 import org.example.blog.service.BlogService;
 import org.example.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,12 @@ public class BlogController {
         }
 
         Blog blog = new Blog(name, manager);
-        blogService.save(blog);
+        try {
+            blogService.save(blog);
+        } catch (UniquenessValidationException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         System.out.println("A new blog added");
         displayBreakLine();

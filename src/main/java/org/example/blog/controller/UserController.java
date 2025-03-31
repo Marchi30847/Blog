@@ -3,6 +3,7 @@ package org.example.blog.controller;
 import org.example.blog.entity.Role;
 import org.example.blog.entity.User;
 import org.example.blog.exception.NoSuchEntityException;
+import org.example.blog.exception.UniquenessValidationException;
 import org.example.blog.service.RoleService;
 import org.example.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +112,12 @@ public class UserController {
         }
 
         User user = new User(email, roles);
-        userService.save(user);
+        try {
+            userService.save(user);
+        } catch (UniquenessValidationException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         System.out.println("A new user has been added");
         displayBreakLine();
