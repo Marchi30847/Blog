@@ -36,6 +36,13 @@ public class Role {
                 .orElse("") + "]";
     }
 
+    @PreRemove
+    private void preRemove() {
+        for (User user : users) {
+            user.getRoles().remove(this);
+        }
+    }
+
     public Long getId() {return id;}
     public String getName() {return name;}
     public Set<User> getUsers() {return users;}

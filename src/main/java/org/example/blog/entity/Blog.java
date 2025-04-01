@@ -13,7 +13,7 @@ public class Blog {
 
     private String name;
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "blog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Article> articles;
 
     @OneToOne
@@ -38,6 +38,11 @@ public class Blog {
                 .map(article -> article.getId() + " - " + article.getTitle())
                 .reduce((a, b) -> a + ", " + b)
                 .orElse("") + "]";
+    }
+
+    @PreRemove
+    private void preRemove() {
+        manager.setManagedBlog(null);
     }
 
     public Long getId() {return id;}

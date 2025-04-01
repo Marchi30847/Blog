@@ -15,10 +15,10 @@ public class User {
     @Column(nullable = false, length = 255)
     private String email;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Article> articles;
 
-    @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "manager", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Blog managedBlog;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -45,17 +45,54 @@ public class User {
                 .map((role) -> role.getId() + " - " + role.getName())
                 .reduce((a, b) -> a + ", " + b)
                 .orElse("") + "], " +
-                "managedBlog: " + managedBlog.getName();
+                "articles: [" + articles.stream()
+                .map((article) -> article.getId() + " - " + article.getTitle())
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("") + "], " +
+                "managedBlog_id: " + (managedBlog != null ? managedBlog.getId() : " - ") + ", " +
+                "managedBlog_name: " + (managedBlog != null ? managedBlog.getName() : " - ");
     }
 
-    public Long getId() {return id;}
-    public String getEmail() {return email;}
-    public Set<Article> getArticles() {return articles;}
-    public Blog getManagedBlog() {return managedBlog;}
-    public Set<Role> getRoles() {return roles;}
+    @PreRemove
+    private void preRemove() {
+        for (Role role : roles) {
+            role.getUsers().remove(this);
+        }
+    }
 
-    public void setEmail(String email) {this.email = email;}
-    public void setArticles(Set<Article> articles) {this.articles = articles;}
-    public void setManagedBlog(Blog managedBlog) {this.managedBlog = managedBlog;}
-    public void setRoles(Set<Role> roles) {this.roles = roles;}
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public Blog getManagedBlog() {
+        return managedBlog;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
+
+    public void setManagedBlog(Blog managedBlog) {
+        this.managedBlog = managedBlog;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }

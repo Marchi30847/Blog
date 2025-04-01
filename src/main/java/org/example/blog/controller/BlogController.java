@@ -127,8 +127,9 @@ public class BlogController {
         System.out.println("\n" + "CHOOSE A SEARCHING OPTION");
         displayBreakLine();
         System.out.println("1. Find by id");
-        System.out.println("2. Find by email");
-        System.out.println("3. Find by role");
+        System.out.println("2. Find by name");
+        System.out.println("3. Find by manager");
+        System.out.println("4. Find by article");
         displayBreakLine();
 
         if (!scanner.hasNextInt()) {
@@ -167,40 +168,58 @@ public class BlogController {
                 displayBreakLine();
             }
             case 2 -> {
-                System.out.println("Enter an email");
+                System.out.println("Enter a name");
                 displayBreakLine();
 
-                String email = scanner.nextLine();
+                String name = scanner.nextLine();
 
-                User user;
+                List<Blog> blogs;
                 try {
-                    user = userService.findByEmail(email);
+                    blogs = blogService.findByName(name);
                 } catch (NoSuchEntityException e) {
                     System.out.println(e.getMessage());
                     return;
                 }
 
-                System.out.println(user);
+                for (Blog blog : blogs) {
+                    System.out.println(blog);
+                }
 
                 displayBreakLine();
             }
             case 3 -> {
-                System.out.println("Enter a role name");
+                System.out.println("Enter a manager email");
                 displayBreakLine();
 
-                String roleName = scanner.nextLine();
+                String managerEmail = scanner.nextLine();
 
-                List<User> users;
+                Blog blog;
                 try {
-                    users = userService.findByUserRoleName(roleName);
+                    blog = blogService.findByBlogManagerEmail(managerEmail);
                 } catch (NoSuchEntityException e) {
                     System.out.println(e.getMessage());
                     return;
                 }
 
-                for (User user : users) {
-                    System.out.println(user);
+                System.out.println(blog);
+
+                displayBreakLine();
+            }
+            case 4 -> {
+                System.out.println("Enter an article title");
+                displayBreakLine();
+
+                String articleTitle = scanner.nextLine();
+
+                Blog blog;
+                try {
+                    blog = blogService.findByArticleTitle(articleTitle);
+                } catch (NoSuchEntityException e) {
+                    System.out.println(e.getMessage());
+                    return;
                 }
+
+                System.out.println(blog);
 
                 displayBreakLine();
             }

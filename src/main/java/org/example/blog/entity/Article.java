@@ -40,6 +40,12 @@ public class Article {
                 "blog_name: " + blog.getName();
     }
 
+    @PreRemove
+    private void preRemove() {
+        author.getArticles().remove(this);
+        blog.getArticles().remove(this);
+    }
+
     public Long getId() {return id;}
     public String getTitle() {return title;}
     public User getAuthor() {return author;}

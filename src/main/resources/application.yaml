@@ -3,7 +3,7 @@ spring:
     name: BookStorage
   banner:
     charset: UTF-8
-    location: banner.txt
+    location: banner
   h2:
     console:
       enabled: true

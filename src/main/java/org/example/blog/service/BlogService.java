@@ -30,12 +30,12 @@ public class BlogService {
         return blogs;
     }
 
-    public List<Blog> findByBlogManagerEmail(String managerName) throws NoSuchEntityException {
-        List<Blog> blogs = blogRepository.findByManager(managerName);
-        if (blogs.isEmpty()) {
-            throw new NoSuchEntityException("Blog Not Found");
-        }
-        return blogs;
+    public Blog findByBlogManagerEmail(String managerEmail) throws NoSuchEntityException {
+        return blogRepository.findByManager(managerEmail).orElseThrow(() -> new NoSuchEntityException("Blog Not Found"));
+    }
+
+    public Blog findByArticleTitle(String articleTitle) throws NoSuchEntityException {
+        return blogRepository.findByArticles(articleTitle).orElseThrow(() -> new NoSuchEntityException("Blog Not Found"));
     }
 
     public List<Blog> findAll() {
@@ -45,7 +45,7 @@ public class BlogService {
     public void save(Blog blog) throws UniquenessValidationException {
         try {
             findByBlogManagerEmail(blog.getManager().getEmail());
-            throw new UniquenessValidationException("Blog Manager is already in use");
+            throw new UniquenessValidationException("Blog Manager is already busy");
         } catch (NoSuchEntityException e) {
             blogRepository.save(blog);
         }

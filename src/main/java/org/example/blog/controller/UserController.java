@@ -9,10 +9,7 @@ import org.example.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -98,8 +95,11 @@ public class UserController {
 
                 try {
                     Role role = roleService.findById(id);
+                    if (roles.stream().anyMatch((r) -> Objects.equals(r.getId(), role.getId()))) {
+                        System.out.println("Role is already set, please choose another one");
+                        continue;
+                    }
                     roles.add(role);
-
                 } catch (NoSuchEntityException e) {
                     System.out.println(e.getMessage());
                 }
@@ -139,13 +139,13 @@ public class UserController {
         scanner.nextLine();
 
         try {
-            roleService.delete(id);
+            userService.delete(id);
         } catch (NoSuchEntityException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        System.out.println("The role is deleted");
+        System.out.println("The user is deleted");
         displayBreakLine();
     }
 
