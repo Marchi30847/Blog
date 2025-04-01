@@ -181,15 +181,15 @@ public class UserController {
                 Long id = scanner.nextLong();
                 scanner.nextLine();
 
-                Role role;
+                User user;
                 try {
-                    role = roleService.findById(id);
+                    user = userService.findById(id);
                 } catch (NoSuchEntityException e) {
                     System.out.println(e.getMessage());
                     return;
                 }
 
-                System.out.println(role);
+                System.out.println(user);
 
                 displayBreakLine();
             }
