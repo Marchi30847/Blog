@@ -42,10 +42,12 @@ public class UserService {
     }
 
     public void save(User user) throws UniquenessValidationException {
-        if (findByEmail(user.getEmail()) != null) {
+        try {
+            findByEmail(user.getEmail());
             throw new UniquenessValidationException("User Email is already in use");
+        } catch (NoSuchEntityException e) {
+            userRepository.save(user);
         }
-        userRepository.save(user);
     }
 
     public void delete(Long id) throws NoSuchEntityException {

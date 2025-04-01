@@ -32,11 +32,6 @@ public class Role {
                 "name: " + name;
     }
 
-    public void removeFromUsers(User user) {
-        users.remove(user);
-        user.getRoles().remove(this);
-    }
-
     public Long getId() {return id;}
     public String getName() {return name;}
     public Set<User> getUsers() {return users;}

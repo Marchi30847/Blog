@@ -155,7 +155,7 @@ public class UserController {
         System.out.println("1. Find by id");
         System.out.println("2. Find by email");
         System.out.println("3. Find by role");
-        System.out.println("3. Find by blog");
+        System.out.println("4. Find by blog");
         displayBreakLine();
 
         if (!scanner.hasNextInt()) {
@@ -194,20 +194,20 @@ public class UserController {
                 displayBreakLine();
             }
             case 2 -> {
-                System.out.println("Enter a name");
+                System.out.println("Enter an email");
                 displayBreakLine();
 
-                String name = scanner.nextLine();
+                String email = scanner.nextLine();
 
-                Role role;
+                User user;
                 try {
-                    role = roleService.findByName(name);
+                    user = userService.findByEmail(email);
                 } catch (NoSuchEntityException e) {
                     System.out.println(e.getMessage());
                     return;
                 }
 
-                System.out.println(role);
+                System.out.println(user);
 
                 displayBreakLine();
             }
@@ -254,7 +254,7 @@ public class UserController {
     }
 
     private void list() {
-        System.out.println("\n" + "LIST OF ALL ROLES");
+        System.out.println("\n" + "LIST OF ALL USERS");
         displayBreakLine();
 
         for (User user : userService.findAll()) {

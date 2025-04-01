@@ -43,10 +43,12 @@ public class BlogService {
     }
 
     public void save(Blog blog) throws UniquenessValidationException {
-        if (findByBlogManagerEmail(blog.getManager().getEmail()) != null) {
+        try {
+            findByBlogManagerEmail(blog.getManager().getEmail());
             throw new UniquenessValidationException("Blog Manager is already in use");
+        } catch (NoSuchEntityException e) {
+            blogRepository.save(blog);
         }
-        blogRepository.save(blog);
     }
 
     public void delete(Long id) throws NoSuchEntityException {

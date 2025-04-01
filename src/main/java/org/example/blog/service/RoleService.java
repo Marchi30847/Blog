@@ -39,10 +39,12 @@ public class RoleService {
     }
 
     public void save(Role role) throws UniquenessValidationException {
-        if (findByName(role.getName()) != null) {
+        try {
+            findByName(role.getName());
             throw new UniquenessValidationException("Role Name is already in use");
+        } catch (NoSuchEntityException e) {
+            roleRepository.save(role);
         }
-        roleRepository.save(role);
     }
 
     public void delete(Long id) throws NoSuchEntityException {

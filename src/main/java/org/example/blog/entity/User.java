@@ -44,16 +44,6 @@ public class User {
                 "roles: " + roles;
     }
 
-    public void removeFromArticles(Article article) {
-        this.articles.remove(article);
-        //article.setAuthor(null);
-    }
-
-    public void removeFromRoles(Role role) {
-        this.roles.remove(role);
-        role.getUsers().remove(this);
-    }
-
     public Long getId() {return id;}
     public String getEmail() {return email;}
     public Set<Article> getArticles() {return articles;}

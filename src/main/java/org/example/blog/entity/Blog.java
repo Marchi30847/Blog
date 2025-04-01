@@ -36,11 +36,6 @@ public class Blog {
                 "manager_email: " + manager.getEmail();
     }
 
-    public void removeFromArticles(Article article) {
-        this.articles.remove(article);
-        article.setBlog(null);
-    }
-
     public Long getId() {return id;}
     public String getName() {return name;}
     public User getManager() {return manager;}

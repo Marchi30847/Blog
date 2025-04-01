@@ -209,11 +209,11 @@ public class BlogController {
     }
 
     private void list() {
-        System.out.println("\n" + "LIST OF ALL USERS");
+        System.out.println("\n" + "LIST OF ALL BLOGS");
         displayBreakLine();
 
-        for (User user : userService.findAll()) {
-            System.out.println(user);
+        for (Blog blog : blogService.findAll()) {
+            System.out.println(blog);
         }
 
         displayBreakLine();
