@@ -42,7 +42,9 @@ public class Blog {
 
     @PreRemove
     private void preRemove() {
-        manager.setManagedBlog(null);
+        if (manager != null) {
+            manager.setManagedBlog(null);
+        }
     }
 
     public Long getId() {return id;}

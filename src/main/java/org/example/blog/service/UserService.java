@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public User findByManagedBlogName(String blogName) {
-        return userRepository.findByManagedBlog(blogName).orElseThrow(() -> new NoSuchEntityException("User Not Found"));
+        return userRepository.findByManagedBlog_Name(blogName).orElseThrow(() -> new NoSuchEntityException("User Not Found"));
     }
 
     public List<User> findAll() {

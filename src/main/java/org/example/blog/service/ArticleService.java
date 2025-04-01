@@ -30,7 +30,7 @@ public class ArticleService {
     }
 
     public List<Article> findByAuthorEmail(String authorEmail) throws NoSuchEntityException {
-        List<Article> articles = articleRepository.findByAuthor(authorEmail);
+        List<Article> articles = articleRepository.findByAuthor_Email(authorEmail);
         if (articles.isEmpty()) {
             throw new NoSuchEntityException("Article Not Found");
         }
@@ -38,7 +38,7 @@ public class ArticleService {
     }
 
     public List<Article> findByBlogName(String blogName) throws NoSuchEntityException {
-        List<Article> articles = articleRepository.findByBlog(blogName);
+        List<Article> articles = articleRepository.findByBlog_Name(blogName);
         if (articles.isEmpty()) {
             throw new NoSuchEntityException("Article Not Found");
         }

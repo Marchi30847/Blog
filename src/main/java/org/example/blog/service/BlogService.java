@@ -31,7 +31,7 @@ public class BlogService {
     }
 
     public Blog findByBlogManagerEmail(String managerEmail) throws NoSuchEntityException {
-        return blogRepository.findByManager(managerEmail).orElseThrow(() -> new NoSuchEntityException("Blog Not Found"));
+        return blogRepository.findByManager_Email(managerEmail).orElseThrow(() -> new NoSuchEntityException("Blog Not Found"));
     }
 
     public Blog findByArticleTitle(String articleTitle) throws NoSuchEntityException {

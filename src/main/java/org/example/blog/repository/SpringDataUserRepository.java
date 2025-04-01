@@ -13,6 +13,5 @@ public interface SpringDataUserRepository extends CrudRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
     List<User> findByRoles(String roleName);
 
-    @Query("SELECT u FROM User u JOIN u.managedBlog b WHERE b.name = :blogName")
-    Optional<User> findByManagedBlog(String blogName);
+    Optional<User> findByManagedBlog_Name(String managedBlogName);
 }

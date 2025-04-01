@@ -42,8 +42,12 @@ public class Article {
 
     @PreRemove
     private void preRemove() {
-        author.getArticles().remove(this);
-        blog.getArticles().remove(this);
+        if (author != null) {
+            author.getArticles().remove(this);
+        }
+        if (blog != null) {
+            blog.getArticles().remove(this);
+        }
     }
 
     public Long getId() {return id;}
