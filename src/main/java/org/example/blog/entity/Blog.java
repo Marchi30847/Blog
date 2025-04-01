@@ -13,7 +13,7 @@ public class Blog {
 
     private String name;
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Article> articles;
 
     @OneToOne
@@ -33,7 +33,11 @@ public class Blog {
         return "id: " + id + ", " +
                 "name: " + name + ", " +
                 "manager_id: " + manager.getId() + ", " +
-                "manager_email: " + manager.getEmail();
+                "manager_email: " + manager.getEmail() + ", " +
+                "articles: [" + articles.stream()
+                .map(article -> article.getId() + " - " + article.getTitle())
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("") + "]";
     }
 
     public Long getId() {return id;}

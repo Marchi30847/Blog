@@ -41,7 +41,11 @@ public class User {
     public String toString() {
         return "id: " + id + ", " +
                 "email: " + email + ", " +
-                "roles: " + roles;
+                "roles: [" + roles.stream()
+                .map((role) -> role.getId() + " - " + role.getName())
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("") + "], " +
+                "managedBlog: " + managedBlog.getName();
     }
 
     public Long getId() {return id;}

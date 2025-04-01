@@ -16,7 +16,7 @@ public class Role {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role() {
@@ -29,7 +29,11 @@ public class Role {
     @Override
     public String toString() {
         return "id: " + id + ", " +
-                "name: " + name;
+                "name: " + name + ", " +
+                "users: [" +  users.stream()
+                .map((user -> user.getId() + " - " + user.getEmail()))
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("") + "]";
     }
 
     public Long getId() {return id;}
